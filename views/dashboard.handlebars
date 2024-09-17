@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="#" onclick="logout()">Log Out</a>
+    </nav>
+    <h1>Dashboard</h1>
+  </header>
+
+  <main>
+    <h2>Your Posts</h2>
+    {{#if posts.length}}
+      {{#each posts}}
+        <div class="post">
+          <h3>{{this.title}}</h3>
+          <p>{{this.content}}</p>
+          <a href="/dashboard/edit/{{this.id}}">Edit</a>
+          
+          <!-- Display comments -->
+          <h4>Comments</h4>
+          {{#if this.comments.length}}
+            {{#each this.comments}}
+              <div class="comment">
+                <p>{{this.content}}</p>
+                <p>By {{this.user.username}} on {{this.createdAt}}</p>
+              </div>
+            {{/each}}
+          {{else}}
+            <p>No comments yet.</p>
+          {{/if}}
+
+          <!-- Link to add comment -->
+          <a href="/dashboard/post/{{this.id}}/comment">Add Comment</a> <!-- Link to the add comment page -->
+        </div>
+      {{/each}}
+    {{else}}
+      <p>You have no posts yet.</p>
+    {{/if}}
+
+    <h2>Create a New Post</h2>
+    <form action="/dashboard/new" method="POST">
+      <input type="text" name="title" placeholder="Post Title" required />
+      <textarea name="content" placeholder="Content" required></textarea>
+      <button type="submit">Add New Post</button>
+    </form>
+  </main>
+
+  <!-- JavaScript for handling the logout -->
+  <script>
+    function logout() {
+      fetch('/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          console.error('Logout failed:', response.statusText);
+        }
+      })
+      .catch(error => console.error('Error during logout:', error));
+    }
+  </script>
+</body>
+</html>

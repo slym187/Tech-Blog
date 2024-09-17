@@ -1,0 +1,27 @@
+<!-- views/comment.handlebars -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Comment</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="#" onclick="logout()">Log Out</a>
+    </nav>
+    <h1>Add Comment</h1>
+  </header>
+
+  <main>
+    <form action="/dashboard/post/{{postId}}/comment" method="POST">
+      <textarea name="content" placeholder="Add a comment..." required></textarea>
+      <button type="submit">Submit Comment</button>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Tech Blog</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <nav class="nav">
+      <a href="/">Home</a>
+      {{#if loggedIn}}
+        <a href="/dashboard">Dashboard</a>
+        <a href="#" onclick="logout()">Logout</a> <!-- Modified logout link -->
+      {{else}}
+        <a href="/auth/login">Login</a>
+        <a href="/auth/signup">Sign Up</a>
+      {{/if}}
+    </nav>
+    <h1>The Tech Blog</h1>
+  </header>
+
+  <!-- Main Content Section -->
+  <main class="container">
+    {{#if posts.length}}
+      {{#each posts}}
+        <div class="post">
+          <h2 class="post-title">{{this.title}}</h2>
+          <p class="post-content">{{this.content}}</p>
+          <p class="post-meta">Posted by {{this.user.username}} on {{this.createdAt}}</p>
+        </div>
+      {{/each}}
+    {{else}}
+      <p>No posts available</p>
+    {{/if}}
+  </main>
+
+  <!-- JavaScript for handling the logout -->
+  <script>
+    // JavaScript function to handle logout
+    function logout() {
+      fetch('/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/'; // Redirect to homepage after successful logout
+        } else {
+          console.error('Logout failed:', response.statusText);
+        }
+      })
+      .catch(error => console.error('Error during logout:', error));
+    }
+  </script>
+</body>
+</html>
