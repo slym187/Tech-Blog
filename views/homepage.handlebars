@@ -13,7 +13,7 @@
       <a href="/">Home</a>
       {{#if loggedIn}}
         <a href="/dashboard">Dashboard</a>
-        <a href="#" onclick="logout()">Logout</a> <!-- Modified logout link -->
+        <a href="#" onclick="logout()">Logout</a>
       {{else}}
         <a href="/auth/login">Login</a>
         <a href="/auth/signup">Sign Up</a>
@@ -30,6 +30,20 @@
           <h2 class="post-title">{{this.title}}</h2>
           <p class="post-content">{{this.content}}</p>
           <p class="post-meta">Posted by {{this.user.username}} on {{this.createdAt}}</p>
+          <a href="#" onclick="handleAddComment({{this.id}})">Add Comment</a> <!-- Link to trigger JS function -->
+          
+          <!-- Display Comments -->
+          <h4>Comments</h4>
+          {{#if this.comments.length}}
+            {{#each this.comments}}
+              <div class="comment">
+                <p>{{this.content}}</p>
+                <p>By {{this.user.username}} on {{this.createdAt}}</p>
+              </div>
+            {{/each}}
+          {{else}}
+            <p>No comments yet.</p>
+          {{/if}}
         </div>
       {{/each}}
     {{else}}
@@ -37,9 +51,19 @@
     {{/if}}
   </main>
 
-  <!-- JavaScript for handling the logout -->
+  <!-- Modal Structure for Login/Signup -->
+  <div id="authModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>You must be logged in to add a comment</h3>
+      <button onclick="redirectToLogin()">Log In</button>
+      <button onclick="redirectToSignup()">Sign Up</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- JavaScript for handling the logout and modal -->
   <script>
-    // JavaScript function to handle logout
+    // Function to handle logout
     function logout() {
       fetch('/auth/logout', {
         method: 'POST',
@@ -55,6 +79,31 @@
         }
       })
       .catch(error => console.error('Error during logout:', error));
+    }
+
+    // Function to handle adding a comment
+    function handleAddComment(postId) {
+      const isLoggedIn = {{#if loggedIn}}true{{else}}false{{/if}}; // Corrected to pass server-side value properly
+      if (isLoggedIn) {
+        // If user is logged in, redirect to add comment page
+        window.location.href = `/dashboard/post/${postId}/comment`;
+      } else {
+        // If user is not logged in, show the modal
+        document.getElementById('authModal').style.display = 'flex'; // Display modal
+      }
+    }
+
+    // Functions for modal actions
+    function closeModal() {
+      document.getElementById('authModal').style.display = 'none';
+    }
+
+    function redirectToLogin() {
+      window.location.href = '/auth/login';
+    }
+
+    function redirectToSignup() {
+      window.location.href = '/auth/signup';
     }
   </script>
 </body>

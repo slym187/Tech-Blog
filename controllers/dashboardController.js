@@ -87,3 +87,21 @@ exports.addComment = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+exports.deletePost = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const deletedPost = await Post.destroy({
+        where: { id: postId, user_id: req.session.user_id }, // Ensure that the user can only delete their own posts
+      });
+  
+      if (!deletedPost) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+  
+      res.status(200).json({ message: 'Post deleted successfully' });
+    } catch (err) {
+      console.error('Error in deletePost:', err);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };

@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
@@ -7,7 +6,6 @@ const sequelize = require('./config/connection');
 const authRoutes = require('./routes/authRoutes'); // Import the auth routes
 const blogRoutes = require('./routes/blogRoutes'); // Import other routes
 const dashboardRoutes = require('./routes/dashboardRoutes'); // Import dashboard routes
-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +19,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false, // Prevent creating sessions unnecessarily
+    saveUninitialized: false,
     store: new SequelizeStore({
       db: sequelize,
     }),
@@ -31,7 +29,7 @@ app.use(
       secure: false, // Set to true if using HTTPS
       sameSite: 'lax', // Helps with CSRF protection
     },
-  })
+  }) // Corrected: added closing parenthesis here
 );
 
 app.use(express.json());

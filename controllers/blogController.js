@@ -5,10 +5,15 @@ const User = require('../models/User');
 // Controller to render the homepage
 exports.getHomepage = async (req, res) => {
   try {
-    // Fetch all posts with the associated User information
+    // Fetch all posts with associated User and Comments
     const postsData = await Post.findAll({
-      include: [{ model: User, attributes: ['username'] }],
-      order: [['createdAt', 'DESC']], // Optional: Order posts by newest first
+      include: [
+        { model: User, attributes: ['username'] },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['username'] }]
+        }
+      ]
     });
 
     const posts = postsData.map((post) => post.get({ plain: true }));
