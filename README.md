@@ -29,7 +29,7 @@ JavaScript - For front-end interactivity.
 Heroku/Render - For deployment.
 
 # Credit
-chatgpt
+chatgpt 
 
 # License
 Please refer to the LICENSE in the repo.
