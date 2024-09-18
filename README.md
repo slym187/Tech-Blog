@@ -1,5 +1,5 @@
 # Tech-Blog
-
+![Screenshot 2024-09-17 224240](https://github.com/user-attachments/assets/70f34cb4-4f56-4921-a062-86864556366a)
 
 # Description
 Tech Blog is a CMS-style blog site that allows users to publish articles, share their thoughts, and interact with other users through comments. Built with Node.js, Express, Sequelize, and Handlebars.js, the site follows the MVC (Model-View-Controller) architecture pattern and utilizes authentication for user login and registration.
